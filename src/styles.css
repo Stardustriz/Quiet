@@ -1,0 +1,702 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sage: var(--sage);
+  --color-sage-foreground: var(--sage-foreground);
+  --color-lavender: var(--lavender);
+  --color-lavender-foreground: var(--lavender-foreground);
+  --color-blush: var(--blush);
+  --color-blush-foreground: var(--blush-foreground);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-paper: var(--paper);
+}
+
+:root {
+  --radius: 1.25rem;
+
+  /* warm off-white / soft sand */
+  --background: #F5EFE6;
+  /* soft charcoal-brown, never pure black */
+  --foreground: #4A4238;
+  --card: #FAF6EF;
+  --card-foreground: #4A4238;
+  --popover: #FAF6EF;
+  --popover-foreground: #4A4238;
+
+  --primary: #4A4238;
+  --primary-foreground: #F5EFE6;
+
+  /* muted sage green */
+  --secondary: #D8E2D3;
+  --secondary-foreground: #384234;
+
+  --muted: #EAE3D8;
+  --muted-foreground: #766E63;
+
+  /* dusty lavender */
+  --accent: #DCD3E8;
+  --accent-foreground: #433952;
+
+  --destructive: #D47B6A;
+  --destructive-foreground: #FAF7F2;
+
+  --border: #E2DACF;
+  --input: #E2DACF;
+  --ring: #D48B76;
+
+  /* semantic pastels */
+  --sage: #D8E2D3;
+  --sage-foreground: #384234;
+  --lavender: #DCD3E8;
+  --lavender-foreground: #433952;
+  --blush: #EAC9C4;
+  --blush-foreground: #5A3B36;
+  --terracotta: #D48B76;
+  --terracotta-foreground: #FAF7F2;
+  --paper: #FAF7F2;
+
+  --font-heading: "Fraunces", "Lora", Georgia, serif;
+  --font-serif: "Lora", Georgia, serif;
+  --font-ui: "Quicksand", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-letter: "Caveat", "Segoe Script", cursive;
+}
+
+@layer base {
+  * {
+    border-color: #E2DACF;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #F5EFE6;
+  }
+
+  body {
+    background-color: #F5EFE6;
+    color: #4A4238;
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button, input, select, textarea {
+    font-family: var(--font-ui);
+  }
+}
+
+/* Water Surface Full-Page Background with calm sage/lavender ripple lines */
+.water-surface-bg {
+  background-color: #F5EFE6;
+  background-image: 
+    radial-gradient(rgba(74, 66, 56, 0.035) 1px, transparent 1px),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 38px,
+      rgba(216, 226, 211, 0.24) 39px,
+      rgba(220, 211, 232, 0.22) 41px,
+      transparent 43px
+    );
+  background-size: 6px 6px, 100% 76px;
+}
+
+/* Explicit Theme Classes (guarantees pastel colors render without unstyled defaults) */
+.bg-sanctuary { background-color: #F5EFE6 !important; }
+.bg-sage-panel { background-color: #D8E2D3 !important; }
+.text-sage-text { color: #384234 !important; }
+.bg-lavender-panel { background-color: #DCD3E8 !important; }
+.text-lavender-text { color: #433952 !important; }
+.bg-blush-accent { background-color: #EAC9C4 !important; }
+.text-blush-text { color: #5A3B36 !important; }
+.bg-terracotta-accent { background-color: #D48B76 !important; }
+.bg-paper-card { background-color: #FAF7F2 !important; }
+.bg-card-panel { background-color: #FAF6EF !important; }
+.text-charcoal-body { color: #4A4238 !important; }
+.text-charcoal-muted { color: #766E63 !important; }
+.border-cozy-subtle { border-color: #E2DACF !important; }
+
+/* subtle pixel-dither texture using a tiny checkerboard of soft dots */
+@utility dither {
+  background-image: radial-gradient(
+    rgba(74, 66, 56, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 6px 6px;
+}
+
+@utility dither-soft {
+  background-image: radial-gradient(
+    rgba(74, 66, 56, 0.045) 1px,
+    transparent 1px
+  );
+  background-size: 5px 5px;
+}
+
+@utility pixel-img {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+@utility font-heading {
+  font-family: var(--font-heading) !important;
+}
+
+@utility font-serif {
+  font-family: var(--font-serif) !important;
+}
+
+@utility font-cozy {
+  font-family: var(--font-heading) !important;
+}
+
+@utility font-letter {
+  font-family: "Caveat", "Segoe Script", cursive !important;
+}
+
+/* Window automatic door/shutter opening animation on load */
+@keyframes shutter-swing-left {
+  0% {
+    transform: perspective(900px) rotateY(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: perspective(900px) rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(900px) rotateY(-105deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shutter-swing-right {
+  0% {
+    transform: perspective(900px) rotateY(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: perspective(900px) rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(900px) rotateY(105deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sky-reveal {
+  0% {
+    filter: brightness(0.4) saturate(0.7);
+  }
+  25% {
+    filter: brightness(0.4) saturate(0.7);
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+.animate-shutter-left {
+  transform-origin: left center;
+  animation: shutter-swing-left 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-shutter-right {
+  transform-origin: right center;
+  animation: shutter-swing-right 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-sky-reveal {
+  animation: sky-reveal 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Custom Cozy Audio Slider */
+.cozy-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  background: #EAE3D8;
+  border: 1.5px solid #E2DACF;
+  border-radius: 9999px;
+  outline: none;
+}
+.cozy-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #D48B76;
+  border: 2.5px solid #FAF7F2;
+  box-shadow: 0 1px 4px rgba(74, 66, 56, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.cozy-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  background: #C37862;
+}
+.cozy-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #D48B76;
+  border: 2.5px solid #FAF7F2;
+  box-shadow: 0 1px 4px rgba(74, 66, 56, 0.25);
+  cursor: pointer;
+}
+
+/* Ripple water pulse */
+@keyframes ripple-pulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(0.92);
+    opacity: 0.65;
+  }
+}
+
+.animate-ripple-pulse {
+  animation: ripple-pulse 3.5s ease-in-out infinite;
+}
+
+/* slow ambient breathing — barely there */
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes soft-glow {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+@keyframes celestial-drift {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-5px) translateX(4px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes steam-rise {
+  0% {
+    opacity: 0.2;
+    transform: translateY(2px) scaleX(0.9);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translateY(-3px) scaleX(1.05);
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateY(-6px) scaleX(0.95);
+  }
+}
+
+@keyframes candle-flicker {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 12px rgba(234, 201, 196, 0.4));
+  }
+  25% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 16px rgba(212, 139, 118, 0.5));
+  }
+  50% {
+    transform: scale(0.98);
+    filter: drop-shadow(0 0 10px rgba(234, 201, 196, 0.35));
+  }
+  75% {
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 18px rgba(212, 139, 118, 0.55));
+  }
+}
+
+@utility animate-breathe {
+  animation: breathe 9s ease-in-out infinite;
+}
+
+@utility animate-soft-glow {
+  animation: soft-glow 7s ease-in-out infinite;
+}
+
+@utility animate-celestial {
+  animation: celestial-drift 11s ease-in-out infinite;
+}
+
+@utility animate-twinkle-fast {
+  animation: twinkle 3.5s ease-in-out infinite;
+}
+
+@utility animate-twinkle-slow {
+  animation: twinkle 5.5s ease-in-out infinite;
+}
+
+@utility animate-steam {
+  animation: steam-rise 4s ease-in-out infinite;
+}
+
+@utility animate-flicker {
+  animation: candle-flicker 5s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   PASTEL DOT-BORDER HOVER EFFECT (Buttons & Links)
+   4 corner dots animating outward, edge-drawing lines, and faint pastel grid
+   Strictly box-shaped for pixel-art aesthetic (not rounded)
+   ========================================================================== */
+.dot-border-wrapper {
+  --dot-size: 6px;
+  --line-weight: 1.5px;
+  --animation-speed: 0.3s;
+  --dot-color: #D48B76; /* soft terracotta */
+  --line-color: #D48B76; /* soft terracotta */
+  --grid-color: rgba(216, 226, 211, 0.45); /* faint sage grid */
+  position: relative;
+  display: block;
+  border-radius: 0 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dot-border-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 0 !important;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--grid-color) 0 1px,
+    transparent 2px 7px
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 0;
+}
+
+.dot-border-wrapper:hover::after {
+  opacity: 1;
+}
+
+.dot-border-wrapper:hover {
+  transform: translateY(-1px);
+}
+
+.dot-border-wrapper .dot {
+  position: absolute;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 0 !important;
+  background-color: var(--dot-color);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 25;
+  transition: all var(--animation-speed) cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+.dot-border-wrapper:hover .dot.top.left {
+  top: calc(var(--dot-size) * -0.5);
+  left: calc(var(--dot-size) * -0.5);
+  opacity: 1;
+}
+
+.dot-border-wrapper:hover .dot.top.right {
+  top: calc(var(--dot-size) * -0.5);
+  right: calc(var(--dot-size) * -0.5);
+  opacity: 1;
+  transition-delay: calc(var(--animation-speed) * 0.2);
+}
+
+.dot-border-wrapper:hover .dot.bottom.right {
+  bottom: calc(var(--dot-size) * -0.5);
+  right: calc(var(--dot-size) * -0.5);
+  opacity: 1;
+  transition-delay: calc(var(--animation-speed) * 0.4);
+}
+
+.dot-border-wrapper:hover .dot.bottom.left {
+  bottom: calc(var(--dot-size) * -0.5);
+  left: calc(var(--dot-size) * -0.5);
+  opacity: 1;
+  transition-delay: calc(var(--animation-speed) * 0.6);
+}
+
+.dot-border-wrapper .line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  transition: transform var(--animation-speed) cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+.dot-border-wrapper .line.horizontal {
+  height: var(--line-weight);
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 4px,
+    var(--line-color) 4px 9px
+  );
+}
+
+.dot-border-wrapper .line.top {
+  top: -1px;
+  left: 0;
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.dot-border-wrapper:hover .line.top {
+  transform: scaleX(1);
+  transition-delay: calc(var(--animation-speed) * 0.25);
+}
+
+.dot-border-wrapper .line.bottom {
+  bottom: -1px;
+  left: 0;
+  transform-origin: right center;
+  transform: scaleX(0);
+}
+
+.dot-border-wrapper:hover .line.bottom {
+  transform: scaleX(1);
+  transition-delay: calc(var(--animation-speed) * 0.65);
+}
+
+.dot-border-wrapper .line.vertical {
+  width: var(--line-weight);
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 4px,
+    var(--line-color) 4px 9px
+  );
+}
+
+.dot-border-wrapper .line.left {
+  left: -1px;
+  top: 0;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+}
+
+.dot-border-wrapper:hover .line.left {
+  transform: scaleY(1);
+  transition-delay: calc(var(--animation-speed) * 0.8);
+}
+
+.dot-border-wrapper .line.right {
+  right: -1px;
+  top: 0;
+  transform-origin: top center;
+  transform: scaleY(0);
+}
+
+.dot-border-wrapper:hover .line.right {
+  transform: scaleY(1);
+  transition-delay: calc(var(--animation-speed) * 0.45);
+}
+
+/* ==========================================================================
+   GENTLE PIXELATED SURREALISM ANIMATIONS
+   Slow, dreamy, looping motions (2s+) that respect prefers-reduced-motion
+   ========================================================================== */
+@keyframes dream-float-slow {
+  0%, 100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  33% {
+    transform: translate(6px, -12px) rotate(4deg);
+  }
+  66% {
+    transform: translate(-4px, -6px) rotate(-3deg);
+  }
+}
+
+@keyframes dream-mote {
+  0%, 100% {
+    transform: translate(0px, 0px);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(5px, -16px);
+    opacity: 0.85;
+  }
+}
+
+@keyframes dream-halo {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.06);
+  }
+}
+
+.animate-dream-float {
+  animation: dream-float-slow 11s ease-in-out infinite;
+}
+
+.animate-dream-mote-1 {
+  animation: dream-mote 8s ease-in-out infinite;
+}
+
+.animate-dream-mote-2 {
+  animation: dream-mote 10s ease-in-out infinite 2.5s;
+}
+
+.animate-dream-halo {
+  animation: dream-halo 7s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   SHADCN UI ANIMATIONS (Collapsible, Radix & Micro-interactions)
+   ========================================================================== */
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.animate-collapsible-down,
+[data-state="open"].collapsible-animated {
+  animation: collapsible-down 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-collapsible-up,
+[data-state="closed"].collapsible-animated {
+  animation: collapsible-up 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-breathe,
+  .animate-soft-glow,
+  .animate-celestial,
+  .animate-twinkle-fast,
+  .animate-twinkle-slow,
+  .animate-steam,
+  .animate-flicker,
+  .animate-shutter-left,
+  .animate-shutter-right,
+  .animate-sky-reveal,
+  .animate-ripple-pulse,
+  .animate-dream-float,
+  .animate-dream-mote-1,
+  .animate-dream-mote-2,
+  .animate-dream-halo,
+  .animate-collapsible-down,
+  .animate-collapsible-up,
+  .collapsible-animated {
+    animation: none !important;
+  }
+  .dot-border-wrapper {
+    transition: none !important;
+  }
+  .dot-border-wrapper .dot,
+  .dot-border-wrapper .line {
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Continuous Marquee Ribbon */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
