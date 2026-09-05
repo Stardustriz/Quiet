@@ -250,16 +250,16 @@ function StickySanctuaryNavbar({
             Exercises
           </button>
           <button
-            onClick={() => scrollToSection("crisis")}
-            className="hover:text-[#3A332B] transition-colors cursor-pointer"
-          >
-            Help
-          </button>
-          <button
             onClick={() => scrollToSection("resources")}
             className="hover:text-[#3A332B] transition-colors cursor-pointer"
           >
             Quiet
+          </button>
+          <button
+            onClick={() => scrollToSection("crisis")}
+            className="hover:text-[#3A332B] transition-colors cursor-pointer"
+          >
+            Help
           </button>
           <button
             onClick={() => scrollToSection("water")}
@@ -655,6 +655,11 @@ const crisisResources = [
 
 const quietResources = [
   {
+    name: "Reasons to Stay",
+    detail: "More anonymous letters of encouragement from people who made it through.",
+    href: "https://reasonstostay.org",
+  },
+  {
     name: "7 Cups",
     detail: "Chat with a trained volunteer listener, any hour.",
     href: "https://www.7cups.com",
@@ -668,11 +673,6 @@ const quietResources = [
     name: "myNoise",
     detail: "Deep library of calming background soundscapes, tunable by ear.",
     href: "https://mynoise.net",
-  },
-  {
-    name: "Reasons to Stay",
-    detail: "More anonymous letters of encouragement from people who made it through.",
-    href: "https://reasonstostay.org",
   },
 ];
 
@@ -1188,7 +1188,60 @@ export default function App() {
 
         <PixelDivider flip />
 
-        {/* 6. Crisis Resources (3-Column Desktop Grid) */}
+        {/* 6. Quiet Resources (4-Column Desktop Grid) - Positioned at upper side */}
+        <section id="resources" className="scroll-mt-20 px-6 py-10 sm:px-10 sm:py-12">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-4 flex items-center gap-3.5">
+              <img
+                src={pixelTea}
+                alt=""
+                width={512}
+                height={512}
+                className="pixel-img h-12 w-12 sm:h-14 sm:w-14 shrink-0"
+              />
+              <div>
+                <h2 className="font-heading text-2xl font-semibold text-[#3D2F3A] sm:text-3xl">
+                  For when you just need some quiet
+                </h2>
+                <p className="mt-1 font-serif text-sm leading-relaxed text-[#6E5D68] sm:text-[15px]">
+                  Calmer corners of the internet to rest with.
+                </p>
+              </div>
+            </div>
+
+            {/* 4 Columns on desktop with matching full height */}
+            <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4.5 items-stretch">
+              {quietResources.map((r) => (
+                <li key={r.name} className="flex h-full">
+                  <PastelDotBorder className="rounded-none w-full h-full flex flex-col flex-1">
+                    <a
+                      href={r.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-full w-full flex-1 flex-col justify-between rounded-none border-2 border-[#DAC9DF] bg-gradient-to-br from-[#EDE4F3] to-[#F7EEF2] p-5 shadow-2xs transition-all duration-200 hover:border-[#C7B2CF] hover:bg-gradient-to-br hover:from-[#F3E8F7] hover:to-[#F8E8EE]"
+                    >
+                      <div>
+                        <span className="block font-heading text-base font-bold text-[#3B2844]">
+                          {r.name} ↗
+                        </span>
+                        <span className="mt-2 block font-serif text-xs leading-relaxed text-[#3D2F3A]/85">
+                          {r.detail}
+                        </span>
+                      </div>
+                      <span className="mt-6 block text-[10px] font-bold uppercase tracking-widest text-[#584260] font-mono">
+                        open sanctuary ↗
+                      </span>
+                    </a>
+                  </PastelDotBorder>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <PixelDivider />
+
+        {/* 7. Crisis Resources (3-Column Desktop Grid) - Positioned at bottom */}
         <section id="crisis" className="scroll-mt-20 px-6 py-10 sm:px-10 sm:py-12">
           <div className="mx-auto max-w-5xl">
             <div className="mb-4 flex items-center gap-3.5">
@@ -1257,58 +1310,7 @@ export default function App() {
           </div>
         </section>
 
-        <PixelDivider />
 
-        {/* 7. Quiet Resources (4-Column Desktop Grid) */}
-        <section id="resources" className="scroll-mt-20 px-6 py-10 sm:px-10 sm:py-12">
-          <div className="mx-auto max-w-5xl">
-            <div className="mb-4 flex items-center gap-3.5">
-              <img
-                src={pixelTea}
-                alt=""
-                width={512}
-                height={512}
-                className="pixel-img h-12 w-12 sm:h-14 sm:w-14 shrink-0"
-              />
-              <div>
-                <h2 className="font-heading text-2xl font-semibold text-[#3D2F3A] sm:text-3xl">
-                  For when you just need some quiet
-                </h2>
-                <p className="mt-1 font-serif text-sm leading-relaxed text-[#6E5D68] sm:text-[15px]">
-                  Calmer corners of the internet to rest with.
-                </p>
-              </div>
-            </div>
-
-            {/* 4 Columns on desktop with matching full height */}
-            <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4.5 items-stretch">
-              {quietResources.map((r) => (
-                <li key={r.name} className="flex h-full">
-                  <PastelDotBorder className="rounded-none w-full h-full flex flex-col flex-1">
-                    <a
-                      href={r.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-full w-full flex-1 flex-col justify-between rounded-none border-2 border-[#DAC9DF] bg-gradient-to-br from-[#EDE4F3] to-[#F7EEF2] p-5 shadow-2xs transition-all duration-200 hover:border-[#C7B2CF] hover:bg-gradient-to-br hover:from-[#F3E8F7] hover:to-[#F8E8EE]"
-                    >
-                      <div>
-                        <span className="block font-heading text-base font-bold text-[#3B2844]">
-                          {r.name} ↗
-                        </span>
-                        <span className="mt-2 block font-serif text-xs leading-relaxed text-[#3D2F3A]/85">
-                          {r.detail}
-                        </span>
-                      </div>
-                      <span className="mt-6 block text-[10px] font-bold uppercase tracking-widest text-[#584260] font-mono">
-                        open sanctuary ↗
-                      </span>
-                    </a>
-                  </PastelDotBorder>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
 
       </main>
 
