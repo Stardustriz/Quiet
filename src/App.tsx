@@ -936,40 +936,30 @@ export default function App() {
               <div className="relative inline-block px-6 py-1.5 sm:px-10 sm:py-2">
                 <span className="absolute inset-x-0 bottom-1 top-1.5 -z-10 bg-[#FCD8D4] -rotate-1 rounded-none shadow-xs" />
                 <span className="font-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-[#1E1915]">
-                  the sanctuary
+                  Sojourn
                 </span>
               </div>
             </div>
 
-            {/* 2. Scaled-Down Line 1 in Bold Arial (No Drop Shadow) */}
+            {/* 2. Main Headline in Bold Arial with Pixel Star */}
             <div className="w-full">
-              <h1 className="font-['Arial',Helvetica,sans-serif] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[82px] font-bold leading-[1.05] tracking-tight text-[#FFFDF8]">
-                for gentle nights
-              </h1>
-            </div>
-
-            {/* 3. Line 2: "&" + "quiet hearts" aligned together (No Drop Shadow) + Pixel Element */}
-            <div className="mt-1 sm:mt-2 flex flex-col items-center">
-              <div className="flex items-baseline justify-center gap-2.5 sm:gap-4">
-                <span className="font-['Arial',Helvetica,sans-serif] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[82px] font-bold leading-none text-[#FFE8CD]">
-                  &
-                </span>
-                <span className="font-['Arial',Helvetica,sans-serif] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[82px] font-bold leading-none tracking-tight text-[#FFFDF8]">
-                  quiet hearts
-                </span>
-                {/* Visible Pixel Stars Element (Replaces the empty white box) */}
-                <div className="inline-flex items-center justify-center select-none align-middle ml-1.5 sm:ml-2.5">
+              <h1 className="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 font-['Arial',Helvetica,sans-serif] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[82px] font-bold leading-[1.08] tracking-tight text-[#FFFDF8]">
+                <span>A quiet place to stay</span>
+                {/* Visible Pixel Stars Element */}
+                <span className="inline-flex items-center justify-center select-none align-middle">
                   <img
                     src={pixelStars}
                     alt=""
                     className="pixel-img h-8 w-8 sm:h-10 sm:w-10 select-none animate-twinkle-slow"
                   />
-                </div>
-              </div>
+                </span>
+              </h1>
+            </div>
 
-              {/* Wide Blue Badge positioned directly below the "&" */}
-              <div className="w-full flex justify-center sm:justify-start sm:pl-16 md:pl-28 lg:pl-44 mt-2 sm:mt-2.5">
-                <div className="border-2 border-[#A290B0] bg-[#EAE2F0] px-4 py-2 sm:px-5 sm:py-2 text-left shadow-sm">
+            {/* 3. Badge positioned below headline */}
+            <div className="mt-3 sm:mt-4 flex flex-col items-center">
+              <div className="w-full flex justify-center">
+                <div className="border-2 border-[#A290B0] bg-[#EAE2F0] px-4 py-2 sm:px-5 sm:py-2 text-center shadow-sm">
                   <div className="text-[10px] sm:text-xs font-mono font-black leading-tight tracking-wider text-[#31203E] uppercase">
                     WHERE NIGHTS GET SOFTER
                   </div>
