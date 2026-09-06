@@ -5,9 +5,10 @@ import pixelCandle from "@/assets/pixel-candle.png";
 import pixelHeart from "@/assets/pixel-heart.png";
 import pixelMoon from "@/assets/pixel-moon.png";
 import pixelTea from "@/assets/pixel-tea.png";
+import pixelStars from "@/assets/pixel-stars.png";
+import pixelMessage from "@/assets/pixel-message.png";
 import pixelCat from "@/assets/pixel-cat.png";
 import pixelPlant from "@/assets/pixel-plant.png";
-import pixelStars from "@/assets/pixel-stars.png";
 import pixelBlanket from "@/assets/pixel-blanket.png";
 import pixelSpeaker from "@/assets/pixel-speaker.png";
 
@@ -657,7 +658,7 @@ const tinyComforts = [
   { icon: pixelMoon, title: "Night Air", text: "Step outside for one minute. Just look at the sky." },
   { icon: pixelPlant, title: "Glass of Water", text: "Drink a tall glass of cool water, very slowly." },
   { icon: pixelCat, title: "Five Minutes", text: "Lie down somewhere comfortable. No phone. Just breathe." },
-  { icon: pixelStars, title: "Honest Word", text: "Text one person one honest sentence. That's all." },
+  { icon: pixelMessage, title: "Honest Word", text: "Text one person one honest sentence. That's all." },
 ];
 
 function PixelDivider({ flip = false }: { flip?: boolean }) {
