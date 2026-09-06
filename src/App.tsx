@@ -313,7 +313,7 @@ function StickySanctuaryNavbar({
                   ? "bg-[#EAE2F0] text-[#3B2844] hover:bg-[#F2D6DC]"
                   : "bg-[#FAF7F2] text-[#766E63] hover:bg-[#EAE2F0]"
               }`}
-              title={rainEnabled ? "Turn off rain & thunder" : "Turn on rain & thunder"}
+              title={rainEnabled ? "Turn off visual rain effect" : "Turn on visual rain effect"}
             >
               <span className="text-xs">🌧️</span>
               <span className="font-heading text-xs font-bold">
@@ -457,7 +457,7 @@ function StickySanctuaryNavbar({
                 rainEnabled ? "bg-[#EAE2F0] text-[#3B2844]" : "bg-[#FAF6EF] text-[#766E63]"
               }`}
             >
-              🌧️ Rain & Thunder: {rainEnabled ? "ON" : "OFF"}
+              🌧️ Rain Effect: {rainEnabled ? "ON" : "OFF"}
             </button>
           </div>
         </div>

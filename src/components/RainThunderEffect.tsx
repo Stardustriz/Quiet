@@ -22,201 +22,7 @@ export function RainThunderEffect({ enabled }: { enabled: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [flashOpacity, setFlashOpacity] = useState<number>(0);
 
-  // Web Audio refs
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const rainGainRef = useRef<GainNode | null>(null);
-  const pitterTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // 1. Subtle, Calming Web Audio (Gentle Rainfall + Distant Rolling Thunder)
-  useEffect(() => {
-    if (!enabled) {
-      if (rainGainRef.current && audioCtxRef.current) {
-        const now = audioCtxRef.current.currentTime;
-        rainGainRef.current.gain.setTargetAtTime(0.0001, now, 0.4);
-      }
-      if (pitterTimerRef.current) {
-        clearInterval(pitterTimerRef.current);
-        pitterTimerRef.current = null;
-      }
-      return;
-    }
-
-    const initAudio = () => {
-      try {
-        const AudioCtx =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext: typeof AudioContext })
-            .webkitAudioContext;
-        if (!audioCtxRef.current) {
-          audioCtxRef.current = new AudioCtx();
-        }
-
-        const ctx = audioCtxRef.current;
-        if (ctx.state === "suspended") {
-          ctx.resume();
-        }
-
-        // Soft pink noise bed for steady distant rainfall
-        const bufferSize = ctx.sampleRate * 4;
-        const noiseBuffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-        for (let channel = 0; channel < 2; channel++) {
-          const data = noiseBuffer.getChannelData(channel);
-          let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-          for (let i = 0; i < bufferSize; i++) {
-            const white = Math.random() * 2 - 1;
-            b0 = 0.99886 * b0 + white * 0.0555179;
-            b1 = 0.99332 * b1 + white * 0.0750759;
-            b2 = 0.96900 * b2 + white * 0.1538520;
-            b3 = 0.86650 * b3 + white * 0.3104856;
-            b4 = 0.55000 * b4 + white * 0.5329522;
-            b5 = -0.7616 * b5 - white * 0.0168980;
-            data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.035;
-            b6 = white * 0.115926;
-          }
-        }
-
-        const rainSource = ctx.createBufferSource();
-        rainSource.buffer = noiseBuffer;
-        rainSource.loop = true;
-
-        const lowPass = ctx.createBiquadFilter();
-        lowPass.type = "lowpass";
-        lowPass.frequency.setValueAtTime(950, ctx.currentTime);
-
-        const highPass = ctx.createBiquadFilter();
-        highPass.type = "highpass";
-        highPass.frequency.setValueAtTime(140, ctx.currentTime);
-
-        const rainGain = ctx.createGain();
-        rainGain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        rainGain.gain.exponentialRampToValueAtTime(0.16, ctx.currentTime + 1.0);
-        rainGainRef.current = rainGain;
-
-        rainSource.connect(lowPass);
-        lowPass.connect(highPass);
-        highPass.connect(rainGain);
-        rainGain.connect(ctx.destination);
-
-        rainSource.start();
-
-        // Subtle soft droplet pitter-patter
-        const schedulePitter = () => {
-          if (!enabled || !audioCtxRef.current) return;
-          const actx = audioCtxRef.current;
-          if (actx.state !== "running") return;
-
-          try {
-            const t = actx.currentTime + Math.random() * 0.08;
-            const osc = actx.createOscillator();
-            const gain = actx.createGain();
-            const filter = actx.createBiquadFilter();
-
-            osc.type = "sine";
-            const freq = 800 + Math.random() * 1400;
-            osc.frequency.setValueAtTime(freq, t);
-            osc.frequency.exponentialRampToValueAtTime(freq * 0.5, t + 0.035);
-
-            filter.type = "bandpass";
-            filter.frequency.setValueAtTime(freq, t);
-            filter.Q.setValueAtTime(4.0, t);
-
-            gain.gain.setValueAtTime(0.0001, t);
-            gain.gain.linearRampToValueAtTime(0.012 + Math.random() * 0.015, t + 0.005);
-            gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
-
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(actx.destination);
-
-            osc.start(t);
-            osc.stop(t + 0.05);
-          } catch {
-            // Ignore
-          }
-        };
-
-        pitterTimerRef.current = setInterval(() => {
-          if (Math.random() > 0.45) schedulePitter();
-        }, 130);
-      } catch {
-        // Audio policy fallback
-      }
-    };
-
-    initAudio();
-
-    return () => {
-      if (rainGainRef.current && audioCtxRef.current) {
-        const now = audioCtxRef.current.currentTime;
-        rainGainRef.current.gain.setTargetAtTime(0.0001, now, 0.4);
-      }
-      if (pitterTimerRef.current) {
-        clearInterval(pitterTimerRef.current);
-        pitterTimerRef.current = null;
-      }
-    };
-  }, [enabled]);
-
-  // 2. Realistic Distant Rolling Thunder Audio
-  const triggerThunderAudio = () => {
-    const ctx = audioCtxRef.current;
-    if (!ctx || ctx.state !== "running" || !enabled) return;
-
-    try {
-      const now = ctx.currentTime + 0.85;
-
-      const osc = ctx.createOscillator();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(44, now);
-      osc.frequency.exponentialRampToValueAtTime(22, now + 4.0);
-
-      const lfo = ctx.createOscillator();
-      lfo.frequency.setValueAtTime(3.8, now);
-      lfo.frequency.linearRampToValueAtTime(1.6, now + 3.6);
-
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.setValueAtTime(14, now);
-      lfo.connect(osc.frequency);
-
-      const bufferSize = ctx.sampleRate * 4;
-      const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.5;
-      }
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = noiseBuffer;
-
-      const thunderFilter = ctx.createBiquadFilter();
-      thunderFilter.type = "lowpass";
-      thunderFilter.frequency.setValueAtTime(160, now);
-      thunderFilter.frequency.exponentialRampToValueAtTime(50, now + 3.8);
-      thunderFilter.Q.setValueAtTime(3.0, now);
-
-      const thunderGain = ctx.createGain();
-      thunderGain.gain.setValueAtTime(0.0001, now);
-      thunderGain.gain.linearRampToValueAtTime(0.26, now + 0.4);
-      thunderGain.gain.linearRampToValueAtTime(0.18, now + 1.1);
-      thunderGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.2);
-
-      osc.connect(thunderGain);
-      noiseSource.connect(thunderFilter);
-      thunderFilter.connect(thunderGain);
-      thunderGain.connect(ctx.destination);
-
-      osc.start(now);
-      lfo.start(now);
-      noiseSource.start(now);
-
-      osc.stop(now + 4.5);
-      lfo.stop(now + 4.5);
-      noiseSource.stop(now + 4.5);
-    } catch {
-      // Ignore
-    }
-  };
-
-  // 3. Gentle Multi-Stroke Lightning Flash (Subtle and not overwhelming)
+  // 1. Gentle Multi-Stroke Lightning Flash (Visual only)
   useEffect(() => {
     if (!enabled) {
       setFlashOpacity(0);
@@ -227,8 +33,6 @@ export function RainThunderEffect({ enabled }: { enabled: boolean }) {
     const scheduleNextFlash = () => {
       const nextDelay = 18000 + Math.random() * 18000;
       flashTimer = setTimeout(() => {
-        triggerThunderAudio();
-
         // Realistic double-pulse twilight lightning
         setFlashOpacity(0.28);
         setTimeout(() => {
@@ -252,7 +56,7 @@ export function RainThunderEffect({ enabled }: { enabled: boolean }) {
     return () => clearTimeout(flashTimer);
   }, [enabled]);
 
-  // 4. Pixelated Rain Theme: Small, Subtle, Multi-Sized Particles
+  // 2. Pixelated Rain Theme: Small, Subtle, Multi-Sized Particles
   useEffect(() => {
     if (!enabled) return;
 
