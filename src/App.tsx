@@ -168,8 +168,6 @@ function StickySanctuaryNavbar({
   setVolume,
   muted,
   setMuted,
-  handleCustomFileUpload,
-  fileInputRef,
   loadError,
   rainEnabled,
   setRainEnabled,
@@ -184,8 +182,6 @@ function StickySanctuaryNavbar({
   setVolume: (v: number) => void;
   muted: boolean;
   setMuted: (m: boolean) => void;
-  handleCustomFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  fileInputRef: React.RefObject<HTMLInputElement | null>;
   loadError: string | null;
   rainEnabled: boolean;
   setRainEnabled: (r: boolean) => void;
@@ -404,23 +400,6 @@ function StickySanctuaryNavbar({
                 </button>
               </div>
 
-              {/* Custom Song Upload */}
-              <div className="border-t border-[#E2DACF] pt-2">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="audio/*"
-                  onChange={handleCustomFileUpload}
-                  className="hidden"
-                />
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-full border border-dashed border-[#E2DACF] bg-[#FAF7F2] py-1 text-[11px] font-mono text-[#766E63] hover:bg-[#FAF6EF] cursor-pointer"
-                >
-                  + upload your own audio file
-                </button>
-              </div>
-
               {loadError && (
                 <p className="text-[10px] text-[#D48B76]">
                   Couldn't play track. Click to retry.
@@ -517,7 +496,7 @@ function InlineBreathingExercise() {
   const phase = BREATH_PHASES[phaseIdx] ?? BREATH_PHASES[0]!;
 
   return (
-    <div className="dither relative flex flex-col justify-between overflow-hidden border-2 border-[#E2DACF] bg-[#DCD3E8]/60 p-7 text-center rounded-none sm:p-8">
+    <div className="dither relative flex h-full flex-col justify-between overflow-hidden border-2 border-[#E2DACF] bg-[#DCD3E8]/60 p-7 text-center rounded-none sm:p-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-[#433952]/85 mb-4">
           rhythmic box breath
@@ -539,24 +518,22 @@ function InlineBreathingExercise() {
             {running ? `${phase.seconds - tick}s` : "ready"}
           </div>
         </div>
-        <p className="mt-5 text-base font-semibold text-[#433952]">
+        <p className="mt-5 text-base font-semibold text-[#433952] min-h-[48px] flex items-center justify-center">
           {running ? phase.label : "A slow breathing exercise, if your chest feels tight."}
         </p>
       </div>
 
-      <div className="mt-6">
-        <PastelDotBorder className="rounded-none inline-block">
-          <button
-            onClick={() => {
-              setRunning((r) => !r);
-              setTick(0);
-              setPhaseIdx(0);
-            }}
-            className="rounded-none border-2 border-[#E2DACF] bg-[#FAF7F2] px-6 py-2.5 text-xs font-bold text-[#4A4238] shadow-xs transition-colors hover:bg-[#EAC9C4]"
-          >
-            {running ? "that's enough" : "breathe with me"}
-          </button>
-        </PastelDotBorder>
+      <div className="mt-6 flex justify-center">
+        <button
+          onClick={() => {
+            setRunning((r) => !r);
+            setTick(0);
+            setPhaseIdx(0);
+          }}
+          className="rounded-none border-2 border-[#E2DACF] bg-[#FAF7F2] px-6 py-2.5 text-xs font-bold text-[#4A4238] shadow-xs transition-all duration-200 hover:bg-[#EAC9C4] hover:border-[#D48B76] cursor-pointer active:scale-95"
+        >
+          {running ? "that's enough" : "breathe with me"}
+        </button>
       </div>
     </div>
   );
@@ -575,14 +552,14 @@ function InlineGroundingExercise() {
   const done = step >= GROUNDING_STEPS.length;
 
   return (
-    <div className="dither relative flex flex-col justify-between overflow-hidden border-2 border-[#E2DACF] bg-[#D8E2D3]/60 p-7 text-center rounded-none sm:p-8">
+    <div className="dither relative flex h-full flex-col justify-between overflow-hidden border-2 border-[#E2DACF] bg-[#D8E2D3]/60 p-7 text-center rounded-none sm:p-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-[#384234]/85 mb-4">
           the 5 · 4 · 3 · 2 · 1 grounding
         </p>
         {!done ? (
           <>
-            <p className="font-letter mt-6 min-h-[90px] text-3xl leading-snug text-[#4A4238] sm:text-4xl">
+            <p className="font-letter mt-6 min-h-[90px] text-3xl leading-snug text-[#4A4238] sm:text-4xl flex items-center justify-center">
               Name {GROUNDING_STEPS[step]!.count} {GROUNDING_STEPS[step]!.prompt}
             </p>
             <div className="mt-6 flex items-center justify-center gap-2.5">
@@ -597,7 +574,7 @@ function InlineGroundingExercise() {
             </div>
           </>
         ) : (
-          <div className="py-6">
+          <div className="py-6 min-h-[162px] flex flex-col justify-center">
             <p className="font-letter text-3xl leading-snug text-[#4A4238] sm:text-4xl">
               You're here. You did it. That's the whole exercise.
             </p>
@@ -608,15 +585,13 @@ function InlineGroundingExercise() {
         )}
       </div>
 
-      <div className="mt-6">
-        <PastelDotBorder className="rounded-none inline-block">
-          <button
-            onClick={() => setStep(done ? 0 : (s) => s + 1)}
-            className="rounded-none border-2 border-[#E2DACF] bg-[#FAF7F2] px-6 py-2.5 text-xs font-bold text-[#4A4238] shadow-xs transition-colors hover:bg-[#EAC9C4]"
-          >
-            {done ? "go again" : step === GROUNDING_STEPS.length - 1 ? "finish" : "next one"}
-          </button>
-        </PastelDotBorder>
+      <div className="mt-6 flex justify-center">
+        <button
+          onClick={() => setStep(done ? 0 : (s) => s + 1)}
+          className="rounded-none border-2 border-[#E2DACF] bg-[#FAF7F2] px-6 py-2.5 text-xs font-bold text-[#4A4238] shadow-xs transition-all duration-200 hover:bg-[#EAC9C4] hover:border-[#D48B76] cursor-pointer active:scale-95"
+        >
+          {done ? "go again" : step === GROUNDING_STEPS.length - 1 ? "finish" : "next one"}
+        </button>
       </div>
     </div>
   );
@@ -713,7 +688,6 @@ export default function App() {
 
   // Audio state
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [tracks, setTracks] = useState<AudioTrack[]>(DEFAULT_TRACKS);
   const [currentTrackId, setCurrentTrackId] = useState<string>("song-1");
   const [playing, setPlaying] = useState(false);
@@ -764,30 +738,29 @@ export default function App() {
       audio.removeEventListener("error", handleError);
       audio.removeEventListener("canplay", handleCanPlay);
       audio.pause();
-      audioRef.current = null;
+      audio.src = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const switchTrack = (newTrackId: string) => {
-    setCurrentTrackId(newTrackId);
+  const switchTrack = (trackId: string) => {
+    const track = tracks.find((t) => t.id === trackId);
+    if (!track) return;
+    setCurrentTrackId(trackId);
     setLoadError(null);
-    const target = tracks.find((t) => t.id === newTrackId);
-    if (!target || !audioRef.current) return;
 
-    const audio = audioRef.current;
-    const wasPlaying = playing;
-    audio.src = target.src;
-    audio.load();
-
-    if (wasPlaying) {
-      audio
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => {
-          setLoadError(target.src);
-          setPlaying(false);
-        });
+    if (audioRef.current) {
+      audioRef.current.src = track.src;
+      audioRef.current.load();
+      if (playing) {
+        audioRef.current
+          .play()
+          .then(() => setPlaying(true))
+          .catch(() => {
+            setLoadError(track.src);
+            setPlaying(false);
+          });
+      }
     }
   };
 
@@ -800,13 +773,12 @@ export default function App() {
   }, [muted]);
 
   const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    if (!audioRef.current) return;
     if (playing) {
-      audio.pause();
+      audioRef.current.pause();
       setPlaying(false);
     } else {
-      audio
+      audioRef.current
         .play()
         .then(() => {
           setPlaying(true);
@@ -816,31 +788,6 @@ export default function App() {
           setLoadError(activeTrack.src);
           setPlaying(false);
         });
-    }
-  };
-
-  const handleCustomFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const fileUrl = URL.createObjectURL(file);
-    const customTrack: AudioTrack = {
-      id: `local-${Date.now()}`,
-      name: file.name.replace(/\.[^/.]+$/, ""),
-      src: fileUrl,
-    };
-
-    setTracks((prev) => [customTrack, ...prev]);
-    setCurrentTrackId(customTrack.id);
-    setLoadError(null);
-
-    if (audioRef.current) {
-      audioRef.current.src = fileUrl;
-      audioRef.current.load();
-      audioRef.current
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
     }
   };
 
@@ -884,8 +831,6 @@ export default function App() {
         setVolume={setVolume}
         muted={muted}
         setMuted={setMuted}
-        handleCustomFileUpload={handleCustomFileUpload}
-        fileInputRef={fileInputRef}
         loadError={loadError}
         rainEnabled={rainEnabled}
         setRainEnabled={setRainEnabled}
@@ -1250,7 +1195,14 @@ export default function App() {
                 </h2>
                 <p className="mt-1 font-serif text-sm leading-relaxed text-[#6E5D68] sm:text-[15px]">
                   These are free, confidential, and answered by humans. No
-                  appointment, no explaining yourself first.
+                  appointment, no explaining yourself first. You can also write to us directly at{" "}
+                  <a
+                    href="mailto:starrdustriz@gmail.com"
+                    className="font-mono font-bold text-[#3D2B3B] underline decoration-[#D48B76] underline-offset-2 hover:text-[#D48B76]"
+                  >
+                    starrdustriz@gmail.com
+                  </a>
+                  .
                 </p>
               </div>
             </div>
@@ -1297,6 +1249,32 @@ export default function App() {
                 </li>
               ))}
             </ul>
+
+            {/* Direct Email Support Card */}
+            <div className="mt-6 border-2 border-[#DFCED8] bg-gradient-to-br from-[#FAF6F2] via-[#F6ECE9] to-[#EFE2EC] p-5 sm:p-6 shadow-2xs">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5 text-center sm:text-left">
+                  <span className="text-3xl select-none">✉️</span>
+                  <div>
+                    <h3 className="font-heading text-lg font-bold text-[#3D2B3B]">
+                      Write to us directly
+                    </h3>
+                    <p className="mt-0.5 font-serif text-xs sm:text-[13.5px] leading-relaxed text-[#6E5D68]">
+                      If you'd like someone to talk to or want to share what you're feeling, our inbox is open. A real human reads every email.
+                    </p>
+                  </div>
+                </div>
+                <PastelDotBorder className="rounded-none shrink-0">
+                  <a
+                    href="mailto:starrdustriz@gmail.com"
+                    className="inline-flex items-center gap-2 rounded-none border-2 border-[#DFCED8] bg-[#FFFDFB] px-5 py-2.5 text-xs sm:text-sm font-mono font-bold text-[#3D2B3B] shadow-2xs transition-colors hover:bg-[#F4DCE2]"
+                  >
+                    <span>starrdustriz@gmail.com</span>
+                    <span>→</span>
+                  </a>
+                </PastelDotBorder>
+              </div>
+            </div>
           </div>
         </section>
 

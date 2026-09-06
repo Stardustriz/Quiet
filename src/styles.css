@@ -419,6 +419,14 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.dot-border-wrapper.inline-block {
+  display: inline-block !important;
+}
+
+.dot-border-wrapper.inline-flex {
+  display: inline-flex !important;
+}
+
 .dot-border-wrapper::after {
   content: "";
   position: absolute;
